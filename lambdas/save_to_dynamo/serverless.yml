@@ -12,3 +12,10 @@ provider:
 functions:
   hello:
     handler: handler.create
+    events:
+      - eventBridge:
+          eventBus:
+            - arn:aws:events:us-east-1:683837296978:event-bus/pizzaria
+          pattern:
+            source:
+              - com.pizza.status
