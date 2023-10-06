@@ -1,0 +1,27 @@
+service: event-filter
+
+frameworkVersion: '3'
+provider:
+  name: aws
+  runtime: python3.9
+  lambdaHashingVersion: 20201221
+  iam:
+    role: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+  eventBridge:
+    useCloudFormation: true
+
+functions:
+  source:
+    handler: handler.handler
+    events:
+      - eventBridge:
+          eventBus:
+            - arn:aws:events:us-east-1:683837296978:event-bus/pizzaria
+          pattern:
+            source:
+              - com.pizza.status
+            detailType:
+              - Alteracao Pizza
+            detail:
+              status:
+                - pronto
